@@ -19,51 +19,53 @@
   <div id="main-body">
     <aside class="m-3" id="search-area">
       <h2 class="fw-bold">Search for a City:</h2>
-      <input type="text" class="form-control mb-3" placeholder="Seattle" aria-label="City" id="city-name" />
-      <div class="d-grid gap-2 border-bottom border-dark">
-        <button class="btn btn-primary mb-3" type="submit">Search</button>
+      <form id="search-form">
+        <input type="text" class="form-control mb-3" placeholder="Seattle" aria-label="City" id="city-name" />
+        <div class="d-grid gap-2 border-bottom border-dark">
+          <button class="btn btn-primary mb-3" type="submit">Search</button>
+      </form>
+  </div>
+  <section class="mt-3" id="search-hist">
+    <div class="d-grid gap-2 ">
+      <button class="btn btn-primary mb-3" type="submit">Search</button>
+    </div>
+    <div class="d-grid gap-2 ">
+      <button class="btn btn-primary mb-3" type="submit">Search</button>
+    </div>
+    <div class="d-grid gap-2 ">
+      <button class="btn btn-primary mb-3" type="submit">Search</button>
+    </div>
+    <div class="d-grid gap-2 ">
+      <button class="btn btn-primary mb-3" type="submit">Search</button>
+    </div>
+    <div class="d-grid gap-2 ">
+      <button class="btn btn-primary mb-3" type="submit">Search</button>
+    </div>
+    <div class="d-grid gap-2 ">
+      <button class="btn btn-primary mb-3" type="submit">Search</button>
+    </div>
+    <div class="d-grid gap-2 ">
+      <button class="btn btn-primary mb-3" type="submit">Search</button>
+    </div>
+    <!-- dynamically generated buttons for search history -->
+  </section>
+  </aside>
+  <main id="main-weather">
+    <section>
+      <div id="today"></div>
+      <!-- where today's weather will get dynamically populated -->
+    </section>
+    <section id="five-day">
+
+      <div id="future-forecast">
+        <div class="future"></div>
+        <div class="future"></div>
+        <div class="future"></div>
+        <div class="future"></div>
+        <div class="future"></div>
       </div>
-      <section class="mt-3" id="search-hist">
-        <div class="d-grid gap-2 ">
-          <button class="btn btn-primary mb-3" type="submit">Search</button>
-        </div>
-        <div class="d-grid gap-2 ">
-          <button class="btn btn-primary mb-3" type="submit">Search</button>
-        </div>
-        <div class="d-grid gap-2 ">
-          <button class="btn btn-primary mb-3" type="submit">Search</button>
-        </div>
-        <div class="d-grid gap-2 ">
-          <button class="btn btn-primary mb-3" type="submit">Search</button>
-        </div>
-        <div class="d-grid gap-2 ">
-          <button class="btn btn-primary mb-3" type="submit">Search</button>
-        </div>
-        <div class="d-grid gap-2 ">
-          <button class="btn btn-primary mb-3" type="submit">Search</button>
-        </div>
-        <div class="d-grid gap-2 ">
-          <button class="btn btn-primary mb-3" type="submit">Search</button>
-        </div>
-        <!-- dynamically generated buttons for search history -->
-      </section>
-    </aside>
-    <main id="main-weather">
-      <section>
-        <div id="today"></div>
-        <!-- where today's weather will get dynamically populated -->
-      </section>
-      <section id="five-day">
-        
-        <div id="future-forecast">
-          <div class="future"></div>
-          <div class="future"></div>
-          <div class="future"></div>
-          <div class="future"></div>
-          <div class="future"></div>
-        </div>
-      </section>
-    </main>
+    </section>
+  </main>
   </div>
 
 
@@ -80,6 +82,7 @@
   <!--dayjs link-->
   <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.3/dayjs.min.js"
     integrity="sha256-iu/zLUB+QgISXBLCW/mcDi/rnf4m4uEDO0wauy76x7U=" crossorigin="anonymous"></script>
+  <script src="./assets/js/script.js"></script>
 </body>
 
 </html>
