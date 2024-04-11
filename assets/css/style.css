@@ -1,0 +1,23 @@
+body{
+  display: flex;
+  flex-direction: column;
+}
+#main-body{
+  display: flex;
+  flex-direction: row;
+  /* align-items:; */
+}
+
+header {
+  background-image: linear-gradient( to right, #0021f3, #270062);
+  border: 3px red;
+  top: 0;
+  height: 6rem;
+  width: 100%;
+}
+
+#main-weather{
+  border: 1px solid black;
+  height: 10rem;
+  align-items:flex-start;
+}
