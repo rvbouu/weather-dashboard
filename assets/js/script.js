@@ -65,15 +65,26 @@ function getGeoApi() {
 
 function todayWeather(){
   let weatherData = JSON.parse(localStorage.getItem('weatherSearch'));
+  console.log(weatherData)
   let today = $('<div>');
-  today.attr('id', 'today');
+  today.attr('id', 'today').addClass('text-black');
+  let todayForecast = $('<div>')
+  todayForecast.attr('id', 'today-forecast');
   let h2 = $('<h2>');
   h2.addClass('fw-bold m-3').text(`${weatherData.city.name} (${dayjs.unix(weatherData.list[0].dt).format('MM/DD/YYYY')}) `);
   h2.appendTo(today);
   let icon = $('<div>');
   icon.addClass(`w${weatherData.list[0].weather[0].icon}`);
+  let temp = $('<p>');
+  temp.text(`Temp: ${weatherData.list[0].main.temp}°F`).appendTo(todayForecast);
+  let wind = $('<p>');
+  wind.text(`Wind: ${weatherData.list[0].wind.speed} MPH`).appendTo(todayForecast);
+  let hum = $('<p>');
+  hum.text(`Humidity: ${weatherData.list[0].main.humidity}%`).appendTo(todayForecast);
   icon.appendTo(today);
   today.appendTo(todaySection);
+  todayForecast.appendTo(todaySection);
+  todaySection.addClass('border border-dark')
 }
 
 function fiveDayWeather(){
