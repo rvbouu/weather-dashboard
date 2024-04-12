@@ -50,11 +50,12 @@ function getGeoApi() {
       return response.json();
     })
 
-    .then(function(data2) {
+    .then(function (data2) {
       console.log(data2);
-      localStorage.setItem('weatherSearch', JSON.stringify(data2))
+      localStorage.setItem('weatherSearch', JSON.stringify(data2));
+
     })
-    
+
     .catch(function (error) {
       console.log(error);
       alert('An error has occured.');
@@ -63,7 +64,7 @@ function getGeoApi() {
 
 
 
-function todayWeather(){
+function todayWeather() {
   let weatherData = JSON.parse(localStorage.getItem('weatherSearch'));
   console.log(weatherData)
   let today = $('<div>');
@@ -87,18 +88,18 @@ function todayWeather(){
   todaySection.addClass('border border-dark')
 }
 
-function fiveDayWeather(){
+function fiveDayWeather() {
   let h2 = $('<h2>');
   h2.addClass('fw-bold').text('5-Day Forecast').appendTo(fiveDay)
   let weatherData = JSON.parse(localStorage.getItem('weatherSearch'));
   let fiveArray = weatherData.list.filter(time => time.dt % 86400 === 43200)
   console.log(fiveArray)
-  for(i = 0; i < fiveArray.length; i++){
+  for (i = 0; i < fiveArray.length; i++) {
     const futureForecast = $('#future-forecast');
     let div = $('<div>');
     div.addClass('future p-1 text-white');
     let h3 = $('<h3>');
-    h3.addClass('fw-bold').text(dayjs.unix(fiveArray[i].dt+86400).format('MM/DD/YYYY')).appendTo(div);
+    h3.addClass('fw-bold').text(dayjs.unix(fiveArray[i].dt + 86400).format('MM/DD/YYYY')).appendTo(div);
     let icon = $('<div>');
     icon.addClass(`w${fiveArray[i].weather[0].icon}`).appendTo(div);
     let temp = $('<p>');
@@ -109,33 +110,85 @@ function fiveDayWeather(){
     hum.text(`Humidity: ${fiveArray[i].main.humidity}%`).appendTo(div);
 
     div.appendTo(futureForecast);
-
   }
 }
 
+// function removeDuplicates() {
+//   let cities = readCitiesFromStorage();
+//   let cityName = cities.map(({ city }) => city);
+//   let filtered = cities.filter(({ city }, i) => !cityName.includes(city, i + 1));
+//   saveCitiesToStorage(filtered);
+// }
+
 // search bar history
-function searchHistory(){
-  // delete same city from array
+// function createSearchHistory() {
+//   let cities = readCitiesFromStorage();
+//   const searchHist = $('#search-hist');
+
+//   for (let i = 0; i < cities.length; i++) {
+//     const div = $('<div>');
+//     div.addClass('d-grid gap-2');
+
+//     const button = $('<button>');
+//     button.addClass('btn btn-secondary mb-3 search-hist-btn').attr('type', 'submit').attr('data-lat', cities[i].lat).attr('data-lon', cities[i].lon).text(cities[i].city);
+//     button.appendTo(div);
+//     div.appendTo(searchHist);
+//   }
+// }
+
+// function handleSearch(){
+//   const cities = readCitiesFromStorage();
+//   const lon = $(this).attr('data-lon');
+//   const lat = $(this).attr('data-lat');
+
+//   cities.forEach((city, i) => {
+//     if(city.lon == lon && city.lat == lat){
+//       const requestURL = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}&units=imperial`;
+//       return fetch(requestURL)
+//       .then(response => {
+//         return response.json();
+//       })
   
-}
+//       .then(function (data2) {
+//         console.log(data2);
+//         localStorage.setItem('weatherSearch', JSON.stringify(data2));
+//         todayWeather()
+//         fiveDayWeather()
+//       })
+  
+//       .catch(function (error) {
+//         console.log(error);
+//         alert('An error has occured.');
+//       });
+
+
+//     }
+//   })
+// }
 
 
 
 
+// createSearchHistory();
 
-
-
-
-
-
-
-searchForm.on('click', '.btn', function (e) {
+searchForm.on('click', '.search-btn', function () {
   e.preventDefault();
 
   getGeoApi();
+  // removeDuplicates();
   todayWeather();
   fiveDayWeather();
+
   cityName.val('');
 })
-
+// createSearchHistory();
+// $('#search-hist').on('click', '.search-hist-btn', function(e){
+//   e.preventDefault();
+//   handleSearch();
+//   todayWeather();
+//   fiveDayWeather();
+//   removeDuplicates();
+//   createSearchHistory();
+//   cityName.val('');
+// })
 // getGeoApi();
