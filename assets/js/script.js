@@ -98,7 +98,7 @@ function fiveDayWeather(){
     let div = $('<div>');
     div.addClass('future p-1 text-white');
     let h3 = $('<h3>');
-    h3.addClass('fw-bold').text(dayjs.unix(fiveArray[i].dt).format('MM/DD/YYYY')).appendTo(div);
+    h3.addClass('fw-bold').text(dayjs.unix(fiveArray[i].dt+86400).format('MM/DD/YYYY')).appendTo(div);
     let icon = $('<div>');
     icon.addClass(`w${fiveArray[i].weather[0].icon}`).appendTo(div);
     let temp = $('<p>');
@@ -113,7 +113,11 @@ function fiveDayWeather(){
   }
 }
 
-
+// search bar history
+function searchHistory(){
+  // delete same city from array
+  
+}
 
 
 
