@@ -21,7 +21,7 @@ function saveCitiesToStorage(cities) {
 
 // gets city's longitude and latitude, saves it into an object, and updates cities array
 function getGeoApi() {
-  const requestURL = `http://api.openweathermap.org/geo/1.0/direct?q=${cityName.val()}&appid=${apiKey}`;
+  const requestURL = `http://api.openweathermap.org/geo/1.0/direct?q=${cityName.val()}&appid=${apiKey}&units=imperial`;
   console.log(requestURL);
 
   fetch(requestURL)
@@ -41,7 +41,7 @@ function getGeoApi() {
         let citiesArr = readCitiesFromStorage()
         citiesArr.push(city);
         saveCitiesToStorage(citiesArr)
-        const requestURL = `https://api.openweathermap.org/data/2.5/forecast?lat=${obj.lat}&lon=${obj.lon}&appid=${apiKey}`;
+        const requestURL = `https://api.openweathermap.org/data/2.5/forecast?lat=${obj.lat}&lon=${obj.lon}&appid=${apiKey}&units=imperial`;
         return fetch(requestURL);
       }
     })
@@ -61,26 +61,46 @@ function getGeoApi() {
     });
 }
 
-// weatherData = localStorage.getItem('')
-// // console.log(cities)
-// let day = 1712836800 % 86400;
-// let newArr = cities.list.filter(time => time.dt % 86400 === day);
-// console.log(newArr)
+
 
 function todayWeather(){
   let weatherData = JSON.parse(localStorage.getItem('weatherSearch'));
   let today = $('<div>');
   today.attr('id', 'today');
   let h2 = $('<h2>');
-  h2.addClass('fw-bold').text(`${weatherData.city.name} (${dayjs.unix(weatherData.list[0].dt).format('MM/DD/YYYY')}) `);
+  h2.addClass('fw-bold m-3').text(`${weatherData.city.name} (${dayjs.unix(weatherData.list[0].dt).format('MM/DD/YYYY')}) `);
   h2.appendTo(today);
   let icon = $('<div>');
-  icon.attr('id',weatherData.list[0].weather[0].icon);
-  icon.appendTo()
-
+  icon.addClass(`w${weatherData.list[0].weather[0].icon}`);
+  icon.appendTo(today);
   today.appendTo(todaySection);
 }
 
+function fiveDayWeather(){
+  let h2 = $('<h2>');
+  h2.addClass('fw-bold').text('5-Day Forecast').appendTo(fiveDay)
+  let weatherData = JSON.parse(localStorage.getItem('weatherSearch'));
+  let fiveArray = weatherData.list.filter(time => time.dt % 86400 === 43200)
+  console.log(fiveArray)
+  for(i = 0; i < fiveArray.length; i++){
+    const futureForecast = $('#future-forecast');
+    let div = $('<div>');
+    div.addClass('future p-1 text-white');
+    let h3 = $('<h3>');
+    h3.addClass('fw-bold').text(dayjs.unix(fiveArray[i].dt).format('MM/DD/YYYY')).appendTo(div);
+    let icon = $('<div>');
+    icon.addClass(`w${fiveArray[i].weather[0].icon}`).appendTo(div);
+    let temp = $('<p>');
+    temp.text(`Temp: ${fiveArray[i].main.temp}°F`).appendTo(div);
+    let wind = $('<p>');
+    wind.text(`Wind: ${fiveArray[i].wind.speed} MPH`).appendTo(div);
+    let hum = $('<p>');
+    hum.text(`Humidity: ${fiveArray[i].main.humidity}%`).appendTo(div);
+
+    div.appendTo(futureForecast);
+
+  }
+}
 
 
 
@@ -99,6 +119,7 @@ searchForm.on('click', '.btn', function (e) {
 
   getGeoApi();
   todayWeather();
+  fiveDayWeather();
   cityName.val('');
 })
 

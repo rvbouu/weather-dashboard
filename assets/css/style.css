@@ -1,8 +1,8 @@
 body{
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  width: 100vw;
+  height: 100%;
+  width: 100%;
 }
 #main-body{
   display: flex;
@@ -27,9 +27,11 @@ header {
 
 #today{
   height: 10rem;
-  width: 100%;
+  width: 90%;
   margin: 1rem 0;
   border: 1px solid black;
+  display: flex;
+  flex-direction: row;
 }
 
 #five-day{
@@ -42,11 +44,96 @@ header {
   flex-direction: row;
   margin-top: 1rem;
   justify-content: space-evenly;
+  width: 90%;
 }
 .future{
+  display: flex;
+  flex-direction: column;
   height: 15rem;
   width:13rem;
-  border: 1px solid black;
-  display: flex;
-  flex-direction:row;
+  background-color: #020079;
+}
+
+.w01d, .w01n{
+  background-image: url(https://openweathermap.org/img/wn/01d.png);
+  height: 3rem;
+  width: 3rem;
+}
+
+.w02d, .w02n{
+  background-image: url(https://openweathermap.org/img/wn/02d.png);
+  height: 3rem;
+  width: 3rem;
+}
+
+.w03d, .w03n{
+  background-image: url(https://openweathermap.org/img/wn/03d.png);
+  height: 3rem;
+  width: 3rem;
+}
+
+.w04d, .w04n{
+  background-image: url(https://openweathermap.org/img/wn/04d.png);
+  height: 3rem;
+  width: 3rem;
+}
+
+.w05d, .w05n{
+  background-image: url(https://openweathermap.org/img/wn/05d.png);
+  height: 3rem;
+  width: 3rem;
+}
+
+.w06d, .w06n{
+  background-image: url(https://openweathermap.org/img/wn/06d.png);
+  height: 3rem;
+  width: 3rem;
+}
+
+.w07d, .w07n{
+  background-image: url(https://openweathermap.org/img/wn/07d.png);
+  height: 3rem;
+  width: 3rem;
+}
+
+.w08d, .w08n{
+  background-image: url(https://openweathermap.org/img/wn/08d.png);
+  height: 3rem;
+  width: 3rem;
+}
+
+.w09d, .w09n{
+  background-image: url(https://openweathermap.org/img/wn/09d.png);
+  height: 3rem;
+  width: 3rem;
+}
+
+.w10d, .w10n{
+  background-image: url(https://openweathermap.org/img/wn/10d.png);
+  height: 3rem;
+  width: 3rem;
+}
+
+.w11d, .w11n{
+  background-image: url(https://openweathermap.org/img/wn/11d.png);
+  height: 3rem;
+  width: 3rem;
+}
+
+.w12d, .w12n{
+  background-image: url(https://openweathermap.org/img/wn/12d.png);
+  height: 3rem;
+  width: 3rem;
+}
+
+.w13d, .w13n{
+  background-image: url(https://openweathermap.org/img/wn/13d.png);
+  height: 3rem;
+  width: 3rem;
+}
+
+.w50d, .w50n{
+  background-image: url(https://openweathermap.org/img/wn/50d.png);
+  height: 3rem;
+  width: 3rem;
 }
