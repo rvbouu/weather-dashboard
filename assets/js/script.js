@@ -1,9 +1,10 @@
 // c1440bd800730d57893df9d23fa3e479 :: API Key
-const today = $('#today'); // append today's weather here
+const todaySection = $('.today'); // append today's weather here
 const fiveDay = $('#five-day'); // append 5 day forecast title here
 const future = $('#future-forecast'); // append 5 day forecast here
 const searchForm = $('#search-form'); // DOM element for search form
 const cityName = $('#city-name'); // input value from search
+const apiKey = 'c1440bd800730d57893df9d23fa3e479'
 
 // gets cities array from localStorage and returns it
 function readCitiesFromStorage() {
@@ -20,7 +21,7 @@ function saveCitiesToStorage(cities) {
 
 // gets city's longitude and latitude, saves it into an object, and updates cities array
 function getGeoApi() {
-  const requestURL = `http://api.openweathermap.org/geo/1.0/direct?q=${cityName.val()}&appid=c1440bd800730d57893df9d23fa3e479`;
+  const requestURL = `http://api.openweathermap.org/geo/1.0/direct?q=${cityName.val()}&appid=${apiKey}`;
   console.log(requestURL);
 
   fetch(requestURL)
@@ -29,10 +30,18 @@ function getGeoApi() {
     })
 
     .then(data => {
-      console.log(data);
       for (let i = 0; i < data.length; i++) {
         const obj = data[i];
-        const requestURL = `https://api.openweathermap.org/data/2.5/forecast?lat=${obj.lat}&lon=${obj.lon}&appid=c1440bd800730d57893df9d23fa3e479&units=imperial`;
+        let city = {
+          city: obj.name,
+          lon: obj.lon,
+          lat: obj.lat
+        };
+
+        let citiesArr = readCitiesFromStorage()
+        citiesArr.push(city);
+        saveCitiesToStorage(citiesArr)
+        const requestURL = `https://api.openweathermap.org/data/2.5/forecast?lat=${obj.lat}&lon=${obj.lon}&appid=${apiKey}`;
         return fetch(requestURL);
       }
     })
@@ -52,63 +61,44 @@ function getGeoApi() {
     });
 }
 
-// function getWeatherApi(city) {
-//   const city = getGeoApi();
-//   console.log(`City Object: ${city}`);
+// weatherData = localStorage.getItem('')
+// // console.log(cities)
+// let day = 1712836800 % 86400;
+// let newArr = cities.list.filter(time => time.dt % 86400 === day);
+// console.log(newArr)
 
-//   const requestURL = `api.openweathermap.org/data/2.5/forecast/daily?lat=${city.lat}&lon=${city.lon}&cnt=6&appid=c1440bd800730d57893df9d23fa3e479&units=imperial`;
+function todayWeather(){
+  let weatherData = JSON.parse(localStorage.getItem('weatherSearch'));
+  let today = $('<div>');
+  today.attr('id', 'today');
+  let h2 = $('<h2>');
+  h2.addClass('fw-bold').text(`${weatherData.city.name} (${dayjs.unix(weatherData.list[0].dt).format('MM/DD/YYYY')}) `);
+  h2.appendTo(today);
+  let icon = $('<div>');
+  icon.attr('id',weatherData.list[0].weather[0].icon);
+  icon.appendTo()
 
-//   fetch(requestURL)
-//     .then(function (response) {
-//       return response.json();
-//     })
-
-//     .then(function (data) {
-//       console.log(data);
-
-//     const h3 = $('<h3>');
-//     h3.addClass('fw-bold').text('5 Day Forecast:').appendTo(fiveDay);
-
-//     for (let i = 0; i < data.length; i++) {
-//       const obj = data[i];
-//       let date = dayjs.unix(obj.list.dt).format('MM/DD/YYYY')
-//       let type = obj.list.weather.icon;
-//       let temp = obj.list.main.temp;
-//       let wind = obj.list.wind.speed;
-//       let hum = obj.list.main.humidity;
-
-//       const weatherCard = $('<div>');
-//       weatherCard.addClass('future').addClass('text-white');
-
-//       const h4 = $('<h4>');
-//       h4.addClass('fw-bold').text(date).appendTo(weatherCard);
-
-//       const icon = $('<p>');
-//       icon.text(type).appendTo(weatherCard);
-
-//       const pTemp = $('<p>');
-//       pTemp.text(`Temp: ${temp}°F`).appendTo(weatherCard);
-
-//       const pWind = $('<p>');
-//       pWind.text(`Wind: ${wind} MPH`).appendTo(weatherCard);
-
-//       const pHum = $('<p>');
-//       pHum.text(`Humidity: ${hum}%`).appendTo(weatherCard);
-//     };
-//     })
-
-//     .catch(function (error) {
-//       console.log(error);
-//       alert('An error has occured.');
-//     });
+  today.appendTo(todaySection);
+}
 
 
-// }
+
+
+
+
+
+
+
+
+
+
+
 
 searchForm.on('click', '.btn', function (e) {
   e.preventDefault();
 
   getGeoApi();
+  todayWeather();
   cityName.val('');
 })
 
