@@ -21,7 +21,7 @@ function saveCitiesToStorage(cities) {
 // gets city's longitude and latitude, saves it into an object, and updates cities array
 function getGeoApi() {
   // api URL for getting longitude and latitude by city name
-  const requestURL = `http://api.openweathermap.org/geo/1.0/direct?q=${cityName.val()}&appid=${apiKey}&units=imperial`;
+  const requestURL = `https://api.openweathermap.org/geo/1.0/direct?q=${cityName.val()}&appid=${apiKey}&units=imperial`;
   console.log(requestURL);
 // fetches data from api
   fetch(requestURL)
