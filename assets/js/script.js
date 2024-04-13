@@ -4,7 +4,7 @@ const fiveDay = $('#five-day'); // append 5 day forecast title here
 const future = $('#future-forecast'); // append 5 day forecast here
 const searchForm = $('#search-form'); // DOM element for search form
 const cityName = $('#city-name'); // input value from search
-const apiKey = 'c1440bd800730d57893df9d23fa3e479'
+const apiKey = 'c1440bd800730d57893df9d23fa3e479';
 
 // gets cities array from localStorage and returns it
 function readCitiesFromStorage() {
@@ -33,6 +33,7 @@ function getGeoApi() {
       for (let i = 0; i < data.length; i++) {
         const obj = data[i];
         let city = {
+          id: crypto.randomUUID(),
           city: obj.name,
           lon: obj.lon,
           lat: obj.lat
@@ -52,8 +53,11 @@ function getGeoApi() {
 
     .then(function (data2) {
       console.log(data2);
+      removeDuplicates();
       localStorage.setItem('weatherSearch', JSON.stringify(data2));
-
+      todayWeather();
+      fiveDayWeather();
+      createSearchHistory()
     })
 
     .catch(function (error) {
@@ -61,7 +65,6 @@ function getGeoApi() {
       alert('An error has occured.');
     });
 }
-
 
 
 function todayWeather() {
@@ -90,7 +93,7 @@ function todayWeather() {
 
 function fiveDayWeather() {
   let h2 = $('<h2>');
-  h2.addClass('fw-bold').text('5-Day Forecast').appendTo(fiveDay)
+  h2.addClass('fw-bold five-head').text('5-Day Forecast').appendTo(fiveDay)
   let weatherData = JSON.parse(localStorage.getItem('weatherSearch'));
   let fiveArray = weatherData.list.filter(time => time.dt % 86400 === 43200)
   console.log(fiveArray)
@@ -113,82 +116,136 @@ function fiveDayWeather() {
   }
 }
 
-// function removeDuplicates() {
-//   let cities = readCitiesFromStorage();
-//   let cityName = cities.map(({ city }) => city);
-//   let filtered = cities.filter(({ city }, i) => !cityName.includes(city, i + 1));
-//   saveCitiesToStorage(filtered);
-// }
-
+function removeDuplicates() {
+  let cities = readCitiesFromStorage();
+  let cityName = cities.map(({ city }) => city);
+  let filtered = cities.filter(({ city }, i) => !cityName.includes(city, i + 1));
+  let filtered10 = filtered.slice(Math.max(filtered.length - 10, 1));
+  console.log(filtered10);
+  return saveCitiesToStorage(filtered10);
+}
+removeDuplicates()
 // search bar history
-// function createSearchHistory() {
-//   let cities = readCitiesFromStorage();
-//   const searchHist = $('#search-hist');
+function createSearchHistory() {
+  let cities = readCitiesFromStorage();
+  const searchHist = $('#search-hist');
 
-//   for (let i = 0; i < cities.length; i++) {
-//     const div = $('<div>');
-//     div.addClass('d-grid gap-2');
+  for (let i = 0; i < cities.length; i++) {
+    const div = $('<div>');
+    div.addClass('d-grid gap-2 history').attr('data-city-id', cities[i].id);
 
-//     const button = $('<button>');
-//     button.addClass('btn btn-secondary mb-3 search-hist-btn').attr('type', 'submit').attr('data-lat', cities[i].lat).attr('data-lon', cities[i].lon).text(cities[i].city);
-//     button.appendTo(div);
-//     div.appendTo(searchHist);
-//   }
-// }
+    const button = $('<button>');
+    button.addClass('btn btn-secondary mb-3 search-hist-btn').attr('type', 'submit').attr('data-city-id', cities[i].id).text(cities[i].city);
+    button.appendTo(div);
+    div.appendTo(searchHist);
+  }
+}
 
-// function handleSearch(){
-//   const cities = readCitiesFromStorage();
-//   const lon = $(this).attr('data-lon');
-//   const lat = $(this).attr('data-lat');
+function handleSearch() {
+  const cityButton = $(this).attr('data-city-id');
+  const cities = readCitiesFromStorage();
+  // console.log(cityButton)
 
-//   cities.forEach((city, i) => {
-//     if(city.lon == lon && city.lat == lat){
-//       const requestURL = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}&units=imperial`;
-//       return fetch(requestURL)
-//       .then(response => {
-//         return response.json();
-//       })
-  
-//       .then(function (data2) {
-//         console.log(data2);
-//         localStorage.setItem('weatherSearch', JSON.stringify(data2));
-//         todayWeather()
-//         fiveDayWeather()
-//       })
-  
-//       .catch(function (error) {
-//         console.log(error);
-//         alert('An error has occured.');
-//       });
+  let coords = cities.filter(function (city) {
+    // city.id === cityButton;
+    // console.log(city.lon)
+    // console.log(city.lat)
+
+    if (city.id === cityButton) {
+      return city;
+    }
+  })
+  console.log(coords);
+  console.log(coords[0].lat);
+   const requestURL = `https://api.openweathermap.org/data/2.5/forecast?lat=${coords[0].lat}&lon=${coords[0].lon}&appid=${apiKey}&units=imperial`;
+    fetch(requestURL)
+      .then(function(response){
+        return response.json();
+      })
+      .then(function(data){
+        console.log(data);
+        removeDuplicates();
+        localStorage.setItem('weatherSearch', JSON.stringify(data));
+        todayWeather();
+        fiveDayWeather();
+        createSearchHistory()
+      })
+
+  // const lon = $(this).lon().text($this).data('coords').lon;
+  // const lat = $(this).data('lat').lat;
+  // console.log(lon);
+  // console.log(lat);
+
+  // for (let i = 0; i < cities.length; i++){
+  //   if(cities[i].city === )
+  // }
+}
+
+// cities.forEach((city, i) => {
+//   if(city.lon == lon && city.lat == lat){
+//     const requestURL = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}&units=imperial`;
+//     console.log(requestURL)
+//     return fetch(requestURL)
+//     .then(response => {
+//       console.log(response)
+//       return response.json();
+//     })
+
+//     .then(function (data) {
+//       console.log(data);
+//       localStorage.setItem('weatherSearch', JSON.stringify(data));
+//       todayWeather();
+//       fiveDayWeather();
+//     })
+
+// .catch(function (error) {
+//       //   console.log(error);
+//       //   alert('An error has occured.');
+//       // });
 
 
 //     }
 //   })
-// }
-
 
 
 
 // createSearchHistory();
+// createSearchHistory();
+// removeDuplicates();
+createSearchHistory();
 
-searchForm.on('click', '.search-btn', function () {
+searchForm.on('click', '.btn', function (e) {
   e.preventDefault();
 
+  $('#today').remove();
+  $('#today-forecast').remove();
+  $('.five-head').remove();
+  $('.future').remove();
+  $('.history').remove()
   getGeoApi();
-  // removeDuplicates();
-  todayWeather();
-  fiveDayWeather();
 
   cityName.val('');
 })
-// createSearchHistory();
-// $('#search-hist').on('click', '.search-hist-btn', function(e){
-//   e.preventDefault();
+
+$('#search-hist').on('click', '.search-hist-btn', handleSearch)
+
+$('#search-hist').on('click', '.search-hist-btn', function (e) {
+  e.preventDefault();
+  $('#today').remove();
+  $('#today-forecast').remove();
+  $('.five-head').remove();
+  $('.future').remove();
+  $('.history').remove();
+})
+
+//   // e.preventDefault();
 //   handleSearch();
-//   todayWeather();
-//   fiveDayWeather();
-//   removeDuplicates();
-//   createSearchHistory();
+//   console.log('click')
+//   // $('#today').remove();
+//   // $('#today-forecast').remove();
+//   // $('.five-head').remove();
+//   // $('.future').remove();
+//   // $('.history').remove()
 //   cityName.val('');
 // })
 // getGeoApi();
