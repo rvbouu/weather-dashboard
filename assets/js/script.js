@@ -223,11 +223,6 @@ function handleSearch() {
       fiveDayWeather();
       // calls createSearchHistory function
       createSearchHistory()
-    })
-    // catches errors and alerts user
-    .catch(function (error) {
-      console.log(error);
-      alert('An error has occured. Please check city name spelling.');
     });
 }
 // calls createSearchHistory function
