@@ -1,3 +1,4 @@
+/* ---------- Body Styling ---------- */
 body {
   display: flex;
   flex-direction: column;
@@ -5,6 +6,7 @@ body {
   width: 100%;
 }
 
+/* ---------- styling for body under header ---------- */
 #main-body {
   display: flex;
   flex-direction: row;
@@ -12,6 +14,7 @@ body {
   width: 100%;
 }
 
+/* ---------- Header styling ---------- */
 header {
   background-image: linear-gradient(to right, #0021f3, #270062);
   border: 3px red;
@@ -20,6 +23,7 @@ header {
   width: 100%;
 }
 
+/* ---------- styling for today's weather ---------- */
 #main-weather {
   display: flex;
   flex-direction: column;
@@ -43,6 +47,7 @@ header {
   width: 90%;
 }
 
+/* ---------- Styling for Five Day Forecast ---------- */
 #five-day {
   display: flex;
   flex-direction: column;
@@ -64,6 +69,7 @@ header {
   background-color: #020079;
 }
 
+/* ---------- Weather Icons ---------- */
 .w01d,
 .w01n {
   background-image: url(https://openweathermap.org/img/wn/01d.png);
