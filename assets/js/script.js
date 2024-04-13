@@ -21,8 +21,7 @@ function saveCitiesToStorage(cities) {
 // gets city's longitude and latitude, saves it into an object, and updates cities array
 function getGeoApi() {
   // api URL for getting longitude and latitude by city name
-  const requestURL = `https://api.openweathermap.org/geo/1.0/direct?q=${cityName.val()}&appid=${apiKey}&units=imperial`;
-  console.log(requestURL);
+  const requestURL = `https://api.openweathermap.org/geo/1.0/direct?q=${cityName.val()}&appid=${apiKey}`;
 // fetches data from api
   fetch(requestURL)
     .then(response => {
@@ -55,7 +54,6 @@ function getGeoApi() {
       return response.json();
     })
     .then(function (data2) {
-      console.log(data2);
       // calls removeDuplicates function
       removeDuplicates();
       // stringifies new data from second api fetch and saves it to localStorage under 'weatherSearch'
@@ -78,7 +76,6 @@ function getGeoApi() {
 function todayWeather() {
   // gets weatherSearch data from localStorage and parses it
   let weatherData = JSON.parse(localStorage.getItem('weatherSearch'));
-  console.log(weatherData);
   // div tag to hold header and weather icon
   let today = $('<div>');
   // id='today' and sets text to black
@@ -128,7 +125,6 @@ function fiveDayWeather() {
   let weatherData = JSON.parse(localStorage.getItem('weatherSearch'));
   // creates array from weatherData with only one object from each day
   let fiveArray = weatherData.list.filter(time => time.dt % 86400 === 43200);
-  console.log(fiveArray)
   // for loop to create five day forecast cards
   for (i = 0; i < fiveArray.length; i++) {
     // calls DOM element for future appending
@@ -166,7 +162,6 @@ function removeDuplicates() {
   let filtered = cities.filter(({ city }, i) => !cityName.includes(city, i + 1));
   // filters out 10 most recent searched cities
   let filtered10 = filtered.slice(0, 10);
-  console.log(filtered10);
   return saveCitiesToStorage(filtered10);
 }
 
@@ -203,8 +198,6 @@ function handleSearch() {
       return city;
     }
   })
-  console.log(coords);
-  console.log(coords[0].lat);
   // api URL to get search history city data
   const requestURL = `https://api.openweathermap.org/data/2.5/forecast?lat=${coords[0].lat}&lon=${coords[0].lon}&appid=${apiKey}&units=imperial`;
   fetch(requestURL)
@@ -212,7 +205,6 @@ function handleSearch() {
       return response.json();
     })
     .then(function (data) {
-      console.log(data);
       // calls removeDuplicates function
       removeDuplicates();
       // sets updated weatherSearch to localStorage
