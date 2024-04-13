@@ -40,7 +40,7 @@ function getGeoApi() {
         };
 
         let citiesArr = readCitiesFromStorage()
-        citiesArr.push(city);
+        citiesArr.unshift(city);
         saveCitiesToStorage(citiesArr)
         const requestURL = `https://api.openweathermap.org/data/2.5/forecast?lat=${obj.lat}&lon=${obj.lon}&appid=${apiKey}&units=imperial`;
         return fetch(requestURL);
@@ -120,11 +120,11 @@ function removeDuplicates() {
   let cities = readCitiesFromStorage();
   let cityName = cities.map(({ city }) => city);
   let filtered = cities.filter(({ city }, i) => !cityName.includes(city, i + 1));
-  let filtered10 = filtered.slice(Math.max(filtered.length - 10, 1));
+  let filtered10 = filtered.slice(0, 10);
   console.log(filtered10);
   return saveCitiesToStorage(filtered10);
 }
-removeDuplicates()
+
 // search bar history
 function createSearchHistory() {
   let cities = readCitiesFromStorage();
@@ -147,9 +147,6 @@ function handleSearch() {
   // console.log(cityButton)
 
   let coords = cities.filter(function (city) {
-    // city.id === cityButton;
-    // console.log(city.lon)
-    // console.log(city.lat)
 
     if (city.id === cityButton) {
       return city;
@@ -157,61 +154,21 @@ function handleSearch() {
   })
   console.log(coords);
   console.log(coords[0].lat);
-   const requestURL = `https://api.openweathermap.org/data/2.5/forecast?lat=${coords[0].lat}&lon=${coords[0].lon}&appid=${apiKey}&units=imperial`;
-    fetch(requestURL)
-      .then(function(response){
-        return response.json();
-      })
-      .then(function(data){
-        console.log(data);
-        removeDuplicates();
-        localStorage.setItem('weatherSearch', JSON.stringify(data));
-        todayWeather();
-        fiveDayWeather();
-        createSearchHistory()
-      })
-
-  // const lon = $(this).lon().text($this).data('coords').lon;
-  // const lat = $(this).data('lat').lat;
-  // console.log(lon);
-  // console.log(lat);
-
-  // for (let i = 0; i < cities.length; i++){
-  //   if(cities[i].city === )
-  // }
+  const requestURL = `https://api.openweathermap.org/data/2.5/forecast?lat=${coords[0].lat}&lon=${coords[0].lon}&appid=${apiKey}&units=imperial`;
+  fetch(requestURL)
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (data) {
+      console.log(data);
+      removeDuplicates();
+      localStorage.setItem('weatherSearch', JSON.stringify(data));
+      todayWeather();
+      fiveDayWeather();
+      createSearchHistory()
+    })
 }
 
-// cities.forEach((city, i) => {
-//   if(city.lon == lon && city.lat == lat){
-//     const requestURL = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}&units=imperial`;
-//     console.log(requestURL)
-//     return fetch(requestURL)
-//     .then(response => {
-//       console.log(response)
-//       return response.json();
-//     })
-
-//     .then(function (data) {
-//       console.log(data);
-//       localStorage.setItem('weatherSearch', JSON.stringify(data));
-//       todayWeather();
-//       fiveDayWeather();
-//     })
-
-// .catch(function (error) {
-//       //   console.log(error);
-//       //   alert('An error has occured.');
-//       // });
-
-
-//     }
-//   })
-
-
-
-// createSearchHistory();
-// createSearchHistory();
-// removeDuplicates();
 createSearchHistory();
 
 searchForm.on('click', '.btn', function (e) {
@@ -223,7 +180,6 @@ searchForm.on('click', '.btn', function (e) {
   $('.future').remove();
   $('.history').remove()
   getGeoApi();
-
   cityName.val('');
 })
 
@@ -237,15 +193,3 @@ $('#search-hist').on('click', '.search-hist-btn', function (e) {
   $('.future').remove();
   $('.history').remove();
 })
-
-//   // e.preventDefault();
-//   handleSearch();
-//   console.log('click')
-//   // $('#today').remove();
-//   // $('#today-forecast').remove();
-//   // $('.five-head').remove();
-//   // $('.future').remove();
-//   // $('.history').remove()
-//   cityName.val('');
-// })
-// getGeoApi();
